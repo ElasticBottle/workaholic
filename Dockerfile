@@ -1,3 +1,8 @@
+# Double-container Dockerfile for separated build process.
+# If you're just copy-pasting this, don't forget a .dockerignore!
+
+# We're starting with the same base image, but we're declaring
+# that this block outputs an image called DEPS that we
 # won't be deploying - it just installs our Yarn deps
 FROM node:14-alpine AS deps
 
@@ -8,8 +13,8 @@ FROM node:14-alpine AS deps
 # so that this `yarn install` layer is only recomputed
 # if these dependency files change. Nice speed hack!
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 # END DEPS IMAGE
 
@@ -24,12 +29,12 @@ WORKDIR /app
 # server for production
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN yarn build
 
 # Remove all the development dependencies since we don't
 # need them to run the actual server.
 RUN rm -rf node_modules
-RUN npm install --production
+RUN yarn install --production --frozen-lockfile --ignore-scripts --prefer-offline
 
 # END OF BUILD_IMAGE
 
@@ -50,9 +55,9 @@ COPY --from=BUILD_IMAGE --chown=nextjs:nodejs /app/package.json /app/yarn.lock .
 COPY --from=BUILD_IMAGE --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=BUILD_IMAGE --chown=nextjs:nodejs /app/public ./public
 COPY --from=BUILD_IMAGE --chown=nextjs:nodejs /app/.next ./.next
-# 4. OPTIONALLY the next.config.js, if your app has one
-COPY --from=BUILD_IMAGE --chown=nextjs:nodejs /app/next.config.js  ./
 
+# 4. OPTIONALLY the next.config.js, if your app has one
+# COPY --from=BUILD_IMAGE --chown=nextjs:nodejs /app/next.config.js  ./
 
 USER nextjs
 
