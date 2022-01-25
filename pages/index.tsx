@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import React, { useEffect } from "react";
 import useSWR from "swr";
 import { parsedDataAtom, participantsAtom } from "../atoms/graph";
@@ -88,3 +88,11 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  console.log(
+    "process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID",
+    process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID
+  );
+  return { props: {} };
+};
