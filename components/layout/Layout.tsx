@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
-import Logo from "../../public/favicon.ico";
 import Meta from "../common/Meta";
 
 function ThemeSwitch() {
@@ -48,7 +47,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex flex-col max-w-3xl min-h-screen p-5 mx-auto">
         <nav className="flex items-center justify-between mb-5">
           <Image
-            src={Logo}
+            src={"/favicon.ico"}
             alt="who's the biggest workaholic icon"
             layout="fixed"
             height={"25"}

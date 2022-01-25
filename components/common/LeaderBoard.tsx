@@ -21,7 +21,7 @@ export function LeaderBoard() {
       </div>
       <table className="table-auto">
         <thead>
-          <tr className="shadow-md bg-slate-100 dark:bg-slate-700 shadow-slate-600">
+          <tr className="shadow-sm bg-slate-100 dark:bg-slate-700 shadow-slate-600">
             {tableHeader.map((header) => {
               return (
                 <th className="px-6 py-3 text-xs font-bold tracking-wider text-left uppercase">
