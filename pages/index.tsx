@@ -11,6 +11,10 @@ import { NextPageWithLayout } from "../interface/NextPageWithLayout";
 import { parseDataFromString } from "../lib/data/parseDataFromString";
 
 async function fetchTimeData(sheetId: string) {
+  console.log(
+    "process.env.NEXT_PUBLIC_SHEET_NAME",
+    process.env.NEXT_PUBLIC_SHEET_NAME
+  );
   const response = await fetch(
     `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${process.env.NEXT_PUBLIC_SHEET_NAME}?dateTimeRenderOption=FORMATTED_STRING&majorDimension=COLUMNS&valueRenderOption=FORMATTED_VALUE&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`
   );
