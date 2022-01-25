@@ -44,6 +44,10 @@ const Home: NextPage = () => {
     process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID || "",
     fetchTimeData
   );
+  console.log(
+    "process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID",
+    process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID
+  );
 
   const [parsedData, setParsedData] = useAtom(parsedDataAtom);
   const [, setParticipants] = useAtom(participantsAtom);
