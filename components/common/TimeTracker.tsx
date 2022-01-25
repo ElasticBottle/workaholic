@@ -15,12 +15,6 @@ export default function TimeTracker() {
     setIsStart((prev) => !prev);
   };
 
-  console.log("startDate.toISOString()", startDate.toISOString());
-  console.log(
-    'format(startDate, "yyyy-MM-ddTHH:mm")',
-    format(startDate, "yyyy-MM-dd'T'HH:mm")
-  );
-  console.log("endDate.toISOString()", endDate.toISOString());
   return (
     <>
       <label htmlFor="start-date">Start date time</label>

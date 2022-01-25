@@ -20,20 +20,12 @@ function ThemeSwitch() {
         document.documentElement.classList.remove("dark");
       }
     } else {
-      console.log(
-        "document.documentElement.classList",
-        document.documentElement.classList
-      );
       if (theme === "dark") {
         document.documentElement.classList.add("dark");
       } else if (theme === "light") {
-        console.log("removing");
         document.documentElement.classList.remove("dark");
       }
-      console.log(
-        "after document.documentElement.classList",
-        document.documentElement.classList
-      );
+
       localStorage.theme = theme;
       setTheme(localStorage.theme);
     }

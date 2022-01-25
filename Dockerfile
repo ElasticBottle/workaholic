@@ -50,11 +50,15 @@ COPY --from=BUILD_IMAGE --chown=nextjs:nodejs /app/package.json /app/yarn.lock .
 COPY --from=BUILD_IMAGE --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=BUILD_IMAGE --chown=nextjs:nodejs /app/public ./public
 COPY --from=BUILD_IMAGE --chown=nextjs:nodejs /app/.next ./.next
-
 # 4. OPTIONALLY the next.config.js, if your app has one
 COPY --from=BUILD_IMAGE --chown=nextjs:nodejs /app/next.config.js  ./
 
+
 USER nextjs
+
+ARG NEXT_PUBLIC_GOOGLE_API_KEY=${NEXT_PUBLIC_GOOGLE_API_KEY}
+ARG NEXT_PUBLIC_GOOGLE_SHEET_ID=${NEXT_PUBLIC_GOOGLE_SHEET_ID}
+ARG NEXT_PUBLIC_SHEET_NAME=${NEXT_PUBLIC_SHEET_NAME}
 
 EXPOSE 3000
 
