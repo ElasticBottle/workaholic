@@ -8,8 +8,8 @@ FROM node:14-alpine AS deps
 # so that this `yarn install` layer is only recomputed
 # if these dependency files change. Nice speed hack!
 WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+COPY package.json package-lock.json ./
+RUN npm ci
 
 # END DEPS IMAGE
 
@@ -24,12 +24,12 @@ WORKDIR /app
 # server for production
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN yarn build
+RUN npm run build
 
 # Remove all the development dependencies since we don't
 # need them to run the actual server.
 RUN rm -rf node_modules
-RUN yarn install --production --frozen-lockfile --ignore-scripts --prefer-offline
+RUN npm install --production
 
 # END OF BUILD_IMAGE
 
