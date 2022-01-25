@@ -10,7 +10,7 @@ jobs:
       - name: Deploy
         uses: AlexxNB/caprover-action@v1
         with:
-          server: ${{secrets.CAPROVER_URLR}}
+          server: ${{secrets.CAPROVER_URL}}
           password: ${{secrets.APP_TOKEN}}
           appname: ${{secrets.APP_NAME}}
           branch: main
