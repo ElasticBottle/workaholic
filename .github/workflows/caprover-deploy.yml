@@ -1,0 +1,16 @@
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deploy
+        uses: AlexxNB/caprover-action@v1
+        with:
+          server: ${{secrets.CAPROVER_URL}}
+          password: ${{secrets.APP_TOKEN}}
+          appname: ${{secrets.APP_NAME}}
+          branch: main
