@@ -22,9 +22,12 @@ export function LeaderBoard() {
       <table className="table-auto">
         <thead>
           <tr className="shadow-sm bg-slate-100 dark:bg-slate-700 shadow-slate-600">
-            {tableHeader.map((header) => {
+            {tableHeader.map((header, index) => {
               return (
-                <th className="px-6 py-3 text-xs font-bold tracking-wider text-left uppercase">
+                <th
+                  key={index}
+                  className="px-6 py-3 text-xs font-bold tracking-wider text-left uppercase"
+                >
                   {header}
                 </th>
               );
@@ -35,6 +38,7 @@ export function LeaderBoard() {
           {leaderBoard.map((person, index) => {
             return (
               <tr
+                key={index}
                 className={`${
                   index % 2 === 1 ? "bg-slate-200 dark:bg-slate-600" : ""
                 } hover:bg-gray-400 hover:dark:bg-gray-500`}

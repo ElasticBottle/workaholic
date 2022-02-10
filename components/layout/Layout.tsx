@@ -19,15 +19,22 @@ function ThemeSwitch() {
         document.documentElement.classList.remove("dark");
       }
     } else {
-      if (theme === "dark") {
+      if (localStorage.theme === "dark") {
         document.documentElement.classList.add("dark");
-      } else if (theme === "light") {
+      } else if (localStorage.theme === "light") {
         document.documentElement.classList.remove("dark");
       }
-
-      localStorage.theme = theme;
       setTheme(localStorage.theme);
     }
+  }, []);
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else if (theme === "light") {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.theme = theme;
   }, [theme]);
 
   return (

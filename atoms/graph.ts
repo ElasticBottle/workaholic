@@ -18,3 +18,7 @@ export const avgTimePerDayAtom = atom<ParticipantDailyData>({});
 
 export const participantAtom = atomWithHash<string>("participant", "");
 export const participantsAtom = atom<string[]>([]);
+export const participantsColumnAtom = atom<{ [name: string]: string }>({});
+export const participantColumnAtom = atom<string>((get) => {
+  return get(participantsColumnAtom)[get(participantAtom)];
+});

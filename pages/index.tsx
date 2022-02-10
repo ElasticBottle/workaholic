@@ -2,7 +2,11 @@ import { useAtom } from "jotai";
 import type { GetServerSideProps, NextPage } from "next";
 import React, { useEffect } from "react";
 import useSWR from "swr";
-import { parsedDataAtom, participantsAtom } from "../atoms/graph";
+import {
+  parsedDataAtom,
+  participantsAtom,
+  participantsColumnAtom,
+} from "../atoms/graph";
 import { LeaderBoard } from "../components/common/LeaderBoard";
 import ParticipantSelect from "../components/common/ParticipantSelect";
 import AvgHrsGraph from "../components/graphs/AvgHrsGraph";
@@ -11,10 +15,6 @@ import { NextPageWithLayout } from "../interface/NextPageWithLayout";
 import { parseDataFromString } from "../lib/data/parseDataFromString";
 
 async function fetchTimeData(sheetId: string) {
-  console.log(
-    "process.env.NEXT_PUBLIC_SHEET_NAME",
-    process.env.NEXT_PUBLIC_SHEET_NAME
-  );
   const response = await fetch(
     `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${process.env.NEXT_PUBLIC_SHEET_NAME}?dateTimeRenderOption=FORMATTED_STRING&majorDimension=COLUMNS&valueRenderOption=FORMATTED_VALUE&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`
   );
@@ -44,20 +44,26 @@ const Home: NextPage = () => {
     process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID || "",
     fetchTimeData
   );
-  console.log(
-    "process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID",
-    process.env["NEXT_PUBLIC_GOOGLE_SHEET_ID"]
-  );
 
   const [parsedData, setParsedData] = useAtom(parsedDataAtom);
   const [, setParticipants] = useAtom(participantsAtom);
+  const [participantCols, setParticipantsColumns] = useAtom(
+    participantsColumnAtom
+  );
 
   useEffect(() => {
     if (!data) {
       setParticipants([]);
       return setParsedData(parseDataFromString(data || "[]"));
     }
-    setParticipants(JSON.parse(data).map((value: string[]) => value[0]));
+    const names: string[] = JSON.parse(data).map((value: string[]) => value[0]);
+    setParticipants(names);
+    setParticipantsColumns(
+      names.reduce((prevVal, currVal, index) => {
+        prevVal[currVal] = `${String.fromCharCode(index + 65)}1`;
+        return prevVal;
+      }, {} as typeof participantCols)
+    );
     setParsedData(parseDataFromString(data));
   }, [data]);
 
@@ -90,9 +96,5 @@ const Home: NextPage = () => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  console.log(
-    "process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID",
-    process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID
-  );
   return { props: {} };
 };
